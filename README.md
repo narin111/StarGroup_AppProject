@@ -1,2 +1,2 @@
-# StarGroup_AppProject - 
+# StarGroup_AppProject
 Mobile Programming Project-Android Application
