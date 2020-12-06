@@ -2,5 +2,7 @@
     <string name="app_name">Starmuri</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_option">Options</string>
+    <string name="title_group">Group</string>
+    <string name="title_counter">Counter</string>
 </resources>
