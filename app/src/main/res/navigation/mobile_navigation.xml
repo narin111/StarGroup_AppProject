@@ -5,11 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="org.techtown.starmuri.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -18,8 +13,24 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="org.techtown.starmuri.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_home"
+        android:name="org.techtown.starmuri.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/navigation_option"
+        android:name="org.techtown.starmuri.ui.option.OptionFragment"
+        android:label="@string/title_option"
+        tools:layout="@layout/fragment_option" />
+    <fragment
+        android:id="@+id/navigation_counter"
+        android:name="org.techtown.starmuri.ui.counter.CounterFragment"
+        android:label="@string/title_counter"
+        tools:layout="@layout/fragment_option" />
+    <fragment
+        android:id="@+id/navigation_group"
+        android:name="org.techtown.starmuri.ui.group.GroupFragment"
+        android:label="@string/title_group"
+        tools:layout="@layout/fragment_option" />
+
 </navigation>
