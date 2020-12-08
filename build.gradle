@@ -20,10 +20,6 @@ allprojects {
         maven{
             url "https://maven.google.com"
         }
-        /*카카오*/
-        maven {
-            url 'https://devrepo.kakao.com/nexus/content/groups/public/'
-        }
     }
 }
 
