@@ -5,4 +5,5 @@
     <string name="title_option">Options</string>
     <string name="title_group">Group</string>
     <string name="title_counter">Counter</string>
+    <string name="kakao_app_key">715c903bb37807c1b1da501718954a4c</string>
 </resources>

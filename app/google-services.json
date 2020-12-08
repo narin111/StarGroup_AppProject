@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "394582900859",
+    "project_id": "stargroup-appproject",
+    "storage_bucket": "stargroup-appproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394582900859:android:24917524dc235bb9b162de",
+        "android_client_info": {
+          "package_name": "org.techtown.starmuri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394582900859-9c1msgltosq9g5jjfbpcjakeuoj1tr25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.techtown.starmuri",
+            "certificate_hash": "5793bb0afbf54c3008a6f8cc09505fd1da441ddb"
+          }
+        },
+        {
+          "client_id": "394582900859-r1603dh7chm6gvjeheenng4b7j5cmmh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_WjgPeNTw70QTX4mKn5CyI9-_o70UvxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394582900859-r1603dh7chm6gvjeheenng4b7j5cmmh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
