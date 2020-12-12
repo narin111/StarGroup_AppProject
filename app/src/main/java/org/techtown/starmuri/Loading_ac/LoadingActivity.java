@@ -25,6 +25,7 @@ public class LoadingActivity extends Activity {
             public void run() {
                 Intent intent = new Intent(getBaseContext(), LoginActivity.class);  // Intent 선언
                 startActivity(intent);   // Intent 시작
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 finish();
             }
         }, 2500);
