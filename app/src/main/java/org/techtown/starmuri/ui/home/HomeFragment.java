@@ -20,18 +20,40 @@ import org.techtown.starmuri.Write_ac.WritingActivity;
 
 public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
+    String text;
+    Button book_title;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final Button book_title = root.findViewById(R.id.book_title_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                book_title.setText(s);
-            }
-        });
+        //프래그먼트가 죽지 않는 방법은 없다.
+        //번들을 계속 주고받고 하는 방법은 없을까?
+        //다른 프래그먼트에서 홈 프래그먼트로 넘어 올 때
+        //번들이 비어버린다.
+        //https://developer.android.com/training/basics/fragments/pass-data-between?hl=ko
+        //답이 있을까 ㅜㅜㅜㅜ.. 
+        if(bundle!=null) {
+            text = bundle.getString("book");
+            book_title = root.findViewById(R.id.book_title_home);
+            homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String s) {
+                    book_title.setText(text);
+                }
+            });
+        }
+
+        else {
+            book_title = root.findViewById(R.id.book_title_home);
+            homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String s) {
+                    book_title.setText(s);
+                }
+            });
+        }
 
         book_title.setOnClickListener(new View.OnClickListener() {
             @Override

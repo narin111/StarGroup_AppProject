@@ -202,8 +202,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "db반영시간기다림");
                 database_write();
             }
-        }, 3500);
-    }
+        }, 2000);
+    }//로딩 메소드들 사이 밀리초 재설정 필요함. get_db<book_obj 인거 까진 알겠음.
     private void start_get_DB_Loading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -229,7 +229,7 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
             }
-        }, 1000);
+        }, 2500);
     }
     private void start_make_BookObj_Loading() {
         this_week = new BookObj();
@@ -245,13 +245,13 @@ public class LoginActivity extends AppCompatActivity {
                         this_week = documentSnapshot.toObject(BookObj.class);
                         intent_to_Homefrag = new Intent(getBaseContext(), MainActivity.class);  // Intent 선언
                         intent_to_Homefrag.putExtra("OBJECT",this_week);
-                        Log.d(TAG, "책이름 "+this_week.getBook());
                         startActivity(intent_to_Homefrag);   // Intent 시작
+                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                         finish();
                     }
                 });
             }
-        }, 2000);
+        }, 3500);
     }
 }
 
