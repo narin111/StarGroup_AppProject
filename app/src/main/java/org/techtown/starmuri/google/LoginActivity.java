@@ -29,11 +29,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.starmuri.Loading_ac.LoadingActivity;
 import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
+import org.techtown.starmuri.link.BookObj;
+import org.techtown.starmuri.ui.home.HomeFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,14 +52,18 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore db;
+    Intent intent_to_Homefrag;
+    BookObj this_week;
+    String[] doc_list;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        doc_list = new String[12];
         Log.d(TAG, "Oncreate 실행됨");
         // Set the dimensions of the sign-in button.
         Button signInButton = findViewById(R.id.sign_in_button);
-
+        db = FirebaseFirestore.getInstance();
         //파이어베이스 Auth 객체
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -139,18 +149,16 @@ public class LoginActivity extends AppCompatActivity {
         if(account!=null){
             //이미 계정을 만들음
             startLoading();
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);  // Intent 선언
-            startActivity(intent);   // Intent 시작
-            finish();
+            start_get_DB_Loading();
+            start_make_BookObj_Loading();
         }
     }
     private void updateUI2(GoogleSignInAccount account) {
         Log.d(TAG, "updateui2 실행됨");
         if(account!=null){
             //이미 계정을 만들음
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);  // Intent 선언
-            startActivity(intent);   // Intent 시작
-            finish();
+            start_get_DB_Loading();
+            start_make_BookObj_Loading();
         }
     }
     private void database_write(){
@@ -196,4 +204,54 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, 3500);
     }
+    private void start_get_DB_Loading() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "db가져오는 시간");
+                db.collection("book_and_topic")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    int i = 0;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        doc_list[i] = document.getId();
+                                        i++;
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+            }
+        }, 1000);
+    }
+    private void start_make_BookObj_Loading() {
+        this_week = new BookObj();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "객체 가져오는 시간");
+                DocumentReference docRef = db.collection("book_and_topic").document(""+doc_list[0]);
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        this_week = documentSnapshot.toObject(BookObj.class);
+                        intent_to_Homefrag = new Intent(getBaseContext(), MainActivity.class);  // Intent 선언
+                        intent_to_Homefrag.putExtra("OBJECT",this_week);
+                        Log.d(TAG, "책이름 "+this_week.getBook());
+                        startActivity(intent_to_Homefrag);   // Intent 시작
+                        finish();
+                    }
+                });
+            }
+        }, 2000);
+    }
 }
+

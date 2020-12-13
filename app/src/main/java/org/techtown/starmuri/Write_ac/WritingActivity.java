@@ -51,6 +51,7 @@ public class WritingActivity extends Activity {
                 String CUemail = user.getEmail();
                 String Cuid = user.getUid();
                 String Context = op_context.getText().toString();
+
                 Map<String, Object> CUser = new HashMap<>();
 
             }

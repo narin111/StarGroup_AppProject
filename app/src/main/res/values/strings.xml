@@ -7,7 +7,4 @@
     <string name="title_counter">Counter</string>
     <string name="join_in_constellation">Join In Constellation</string>
     <string name="sign_in_with_google">Sign in With Google</string>
-    <string name="server_client_id"></string>
-    <string name="book_title"></string>
-    <string name="book_topic"></string>
 </resources>

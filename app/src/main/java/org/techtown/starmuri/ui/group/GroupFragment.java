@@ -26,13 +26,13 @@ public class GroupFragment extends Fragment {
         groupViewModel =
                 ViewModelProviders.of(this).get(GroupViewModel.class);
         View root = inflater.inflate(R.layout.fragment_group, container, false);
-        final TextView textView = root.findViewById(R.id.text_group);
+        /*final TextView textView = root.findViewById(R.id.text_group);
         groupViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 
