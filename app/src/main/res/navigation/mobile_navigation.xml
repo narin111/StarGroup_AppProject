@@ -5,32 +5,104 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="org.techtown.starmuri.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <!--<action
+            android:id="@+id/action_navigation_dashboard_to_navigation_counter2"
+            app:destination="@id/navigation_counter" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_option2"
+            app:destination="@id/navigation_option" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_home2"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_group2"
+            app:destination="@id/navigation_group" />
+            -->
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="org.techtown.starmuri.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <!--
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_option3"
+            app:destination="@id/navigation_option" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_counter3"
+            app:destination="@id/navigation_counter" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_dashboard5"
+            app:destination="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_group3"
+            app:destination="@id/navigation_group" />
+            -->
+    </fragment>
     <fragment
         android:id="@+id/navigation_option"
         android:name="org.techtown.starmuri.ui.option.OptionFragment"
         android:label="@string/title_option"
-        tools:layout="@layout/fragment_option" />
+        tools:layout="@layout/fragment_option" >
+        <!--
+        <action
+            android:id="@+id/action_navigation_option_to_navigation_counter3"
+            app:destination="@id/navigation_counter" />
+        <action
+            android:id="@+id/action_navigation_option_to_navigation_home3"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_option_to_navigation_dashboard3"
+            app:destination="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_navigation_option_to_navigation_group2"
+            app:destination="@id/navigation_group" />
+            -->
+    </fragment>
     <fragment
         android:id="@+id/navigation_counter"
         android:name="org.techtown.starmuri.ui.counter.CounterFragment"
         android:label="@string/title_counter"
-        tools:layout="@layout/fragment_option" />
+        tools:layout="@layout/fragment_option" >
+        <!--
+        <action
+            android:id="@+id/action_navigation_counter_to_navigation_option2"
+            app:destination="@id/navigation_option" />
+        <action
+            android:id="@+id/action_navigation_counter_to_navigation_home2"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_counter_to_navigation_dashboard2"
+            app:destination="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_navigation_counter_to_navigation_group2"
+            app:destination="@id/navigation_group" />
+            -->
+    </fragment>
     <fragment
         android:id="@+id/navigation_group"
         android:name="org.techtown.starmuri.ui.group.GroupFragment"
         android:label="@string/title_group"
-        tools:layout="@layout/fragment_option" />
-
+        tools:layout="@layout/fragment_option" >
+        <!--
+        <action
+            android:id="@+id/action_navigation_group_to_navigation_home2"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_group_to_navigation_option2"
+            app:destination="@id/navigation_option" />
+        <action
+            android:id="@+id/action_navigation_group_to_navigation_dashboard2"
+            app:destination="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_navigation_group_to_navigation_counter2"
+            app:destination="@id/navigation_counter" />
+            -->
+    </fragment>
 </navigation>

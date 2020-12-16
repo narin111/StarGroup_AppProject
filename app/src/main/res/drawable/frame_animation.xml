@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/fr0" android:duration="60"/>
+    <item android:drawable="@drawable/fr1" android:duration="60"/>
+    <item android:drawable="@drawable/fr2" android:duration="60"/>
+    <item android:drawable="@drawable/fr3" android:duration="60"/>
+    <item android:drawable="@drawable/fr4" android:duration="60"/>
+    <item android:drawable="@drawable/fr5" android:duration="60"/>
+    <item android:drawable="@drawable/fr6" android:duration="60"/>
+    <item android:drawable="@drawable/fr7" android:duration="60"/>
+    <item android:drawable="@drawable/fr8" android:duration="60"/>
+    <item android:drawable="@drawable/fr9" android:duration="60"/>
+    <item android:drawable="@drawable/fr10" android:duration="60"/>
+    <item android:drawable="@drawable/fr11" android:duration="60"/>
+    <item android:drawable="@drawable/fr12" android:duration="60"/>
+    <item android:drawable="@drawable/fr13" android:duration="60"/>
+    <item android:drawable="@drawable/fr14" android:duration="60"/>
+    <item android:drawable="@drawable/fr15" android:duration="60"/>
+    <item android:drawable="@drawable/fr16" android:duration="60"/>
+    <item android:drawable="@drawable/fr17" android:duration="60"/>
+    <item android:drawable="@drawable/fr18" android:duration="60"/>
+    <item android:drawable="@drawable/fr19" android:duration="60"/>
+    <item android:drawable="@drawable/fr20" android:duration="60"/>
+    <item android:drawable="@drawable/fr21" android:duration="60"/>
+    <item android:drawable="@drawable/fr22" android:duration="60"/>
+    <item android:drawable="@drawable/fr23" android:duration="60"/>
+    <item android:drawable="@drawable/fr24" android:duration="60"/>
+    <item android:drawable="@drawable/fr25" android:duration="60"/>
+    <item android:drawable="@drawable/fr26" android:duration="60"/>
+    <item android:drawable="@drawable/fr27" android:duration="60"/>
+</animation-list>

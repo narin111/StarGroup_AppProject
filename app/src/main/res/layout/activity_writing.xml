@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="4"
+        android:background="@drawable/text_border"
+        android:fontFamily="@font/nanumgothic_normal"
+        android:padding="10dp"
+        android:text="이건 기본 책 제목 내용이에요.\n이건 기본 주제 내용이에요."
+        android:textColor="@color/default_text"
+        android:textSize="17sp"
+        android:textStyle="bold|italic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="13dp"
+            android:layout_weight="1"
+            android:src="@drawable/star_bar3" />
+
+        <Button
+            android:id="@+id/finish_writing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp"
+            android:layout_weight="5"
+            android:background="#00FFFFFF"
+            android:fontFamily="@font/nanumgothic_normal"
+            android:paddingRight="11dp"
+            android:text="등록"
+            android:textColor="@color/default_text"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/opinion_context"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="4"
+        android:background="@drawable/text_border_dash"
+        android:cursorVisible="true"
+        android:ems="10"
+        android:fontFamily="@font/nanumgothic_light"
+        android:gravity="start"
+        android:hint="이번주 책을 읽고 어떻게 느끼셨나요?\n주제를 보고 느낀 점을 적어주세요!"
+        android:includeFontPadding="true"
+        android:inputType="textMultiLine"
+        android:minLines="1"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/default_text"
+        android:textColorHint="#5EFFFFFF"
+        android:textStyle="italic" />
+</LinearLayout>
