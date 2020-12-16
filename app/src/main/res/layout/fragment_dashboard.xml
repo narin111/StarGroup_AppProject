@@ -23,8 +23,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_height="52dp"
             android:background="@drawable/text_border"
             android:orientation="horizontal">
 
@@ -32,9 +31,8 @@
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_group_con_for_text" />
 
@@ -42,10 +40,9 @@
                 android:id="@+id/title_topic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="23dp"
-                android:layout_weight="10"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="7"
                 android:fontFamily="@font/nanumgothic_normal"
                 android:text="이번 주 주제 가져오는중..."
                 android:textColor="@color/default_text"
@@ -58,7 +55,8 @@
             android:layout_marginTop="30dp"
             android:layout_weight="5"
             android:background="@drawable/text_border"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/for_solo">
 
             <TextView
                 android:id="@+id/name1"
@@ -130,7 +128,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/for_button">
 
             <Button
                 android:id="@+id/button"
@@ -141,6 +140,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_border"
                 android:fontFamily="@font/nanumgothic_normal"
+                android:text="이전"
                 android:textColor="@color/default_text" />
 
             <Button
@@ -152,7 +152,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_border"
                 android:fontFamily="@font/nanumgothic_normal"
-                android:text="Button"
+                android:text="다음"
                 android:textColor="@color/default_text" />
         </LinearLayout>
     </LinearLayout>

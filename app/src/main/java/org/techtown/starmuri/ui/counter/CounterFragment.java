@@ -31,11 +31,11 @@ import org.techtown.starmuri.link.UserObj;
 
 import static android.content.ContentValues.TAG;
 
-import org.techtown.starmuri.Dialog;
+import org.techtown.starmuri.Dialogs;
 
 public class CounterFragment extends Fragment {
 
-    Dialog dialog = new Dialog();
+    Dialogs dialogs = new Dialogs();
     private FirebaseAuth firebaseAuth;
     UserObj userObj;
     private FirebaseFirestore db;
@@ -102,7 +102,6 @@ public class CounterFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d(TAG, document.getId() + " => " + document.getData());
                                         starcnt++;

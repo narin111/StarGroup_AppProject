@@ -1,11 +1,12 @@
 package org.techtown.starmuri.ui.group;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,7 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.techtown.starmuri.Dialog;
+import org.techtown.starmuri.Custom_Dialog;
+import org.techtown.starmuri.Dialogs;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.GroupObj;
 import org.techtown.starmuri.link.UserObj;
@@ -54,8 +57,7 @@ public class GroupFragment extends Fragment {
     private TextView group_name,Mnumber,Mlist;
     private View view;
     Map<String, Object> op1;
-
-    Dialog dialog;
+    Dialogs dialogs;
     AppCompatDialog progressDialog;
 
 
@@ -79,14 +81,13 @@ public class GroupFragment extends Fragment {
         group_make_button = root.findViewById(R.id.group_make);
         withdrawal = root.findViewById(R.id.withdrawal);
         op1 = new HashMap<>();
-
-        dialog = new Dialog();
-        dialog.setdialog(progressDialog);
-
+        dialogs = new Dialogs();
+        final Custom_Dialog custom_dialog;
+        custom_dialog = new Custom_Dialog(this);
 
         if (user != null) {
             // User is signed in
-            dialog.progressON(getActivity(),"흐트러진 파일들 정리하는중...");
+            dialogs.progressON(getActivity(),"흐트러진 파일들 정리하는중...");
             Log.d(TAG, "db반영시간기다림");
             Log.d(TAG, "현재 사용자 인증됨.");
             String Cuid = user.getUid();
@@ -107,6 +108,7 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("그룹 검색 버튼 클릭");
+                custom_dialog.Go_Dialog();
             }
         });
         group_make_button.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +136,7 @@ public class GroupFragment extends Fragment {
             @Override
             public void run() {
                 if (userObj.getG_code().equals("0000A")) {
-                    dialog.progressOFF();
+                    dialogs.progressOFF();
                     Log.d(TAG, "현재 사용자 그룹없음.");
                     group_name.setText("별무리에 속해 보세요~");
                     view.setVisibility(View.INVISIBLE);
@@ -197,7 +199,7 @@ public class GroupFragment extends Fragment {
                                 }
                             }
                         });
-                dialog.progressOFF();
+                dialogs.progressOFF();
         }
     }, 1000);
     }

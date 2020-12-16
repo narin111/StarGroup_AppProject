@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.UserObj;
-import org.techtown.starmuri.Dialog;
+import org.techtown.starmuri.Dialogs;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
@@ -38,7 +36,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
-    private Dialog dialog;
+    private Dialogs dialogs;
     private FirebaseAuth firebaseAuth;
     UserObj userObj;
     private FirebaseFirestore db,db2;
@@ -47,7 +45,7 @@ public class DashboardFragment extends Fragment {
     String string1,string2;
     private String[] name_list;
     private String[] op_list;
-    private View view1;
+    private View view1, view2,view3;
     int ocount, ncount;
     private TextView title,name1,name2,op1,op2;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,7 +53,7 @@ public class DashboardFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         db2 = FirebaseFirestore.getInstance();
-        dialog = new Dialog();
+        dialogs = new Dialogs();
         final SharedPreferences sharedPref = getActivity().getSharedPreferences("sFile",MODE_PRIVATE);
         string1 = sharedPref.getString("book","asd");
         string2 = sharedPref.getString("bookcode","asd");
@@ -73,9 +71,11 @@ public class DashboardFragment extends Fragment {
         name_list = new String[30];
         op_list = new String[30];
         view1 = root.findViewById(R.id.for_group);
+        view2 = root.findViewById(R.id.for_solo);
+        view3 = root.findViewById(R.id.for_button);
         if (user != null) {
             // User is signed in
-            dialog.progressON(this.getActivity(),"이웃 별 보는중...");
+            dialogs.progressON(this.getActivity(),"이웃 별 보는중...");
             Log.d(TAG, "db반영시간기다림");
             Log.d(TAG, "현재 사용자 인증됨.");
             Cuid = user.getUid();
@@ -108,9 +108,9 @@ public class DashboardFragment extends Fragment {
             @Override
             public void run() {
                 if (userObj.getG_code().equals("0000A")) {
-                    dialog.progressOFF();
                     Log.d(TAG, "현재 사용자 그룹없음.");
                     view1.setVisibility(View.GONE);
+                    view3.setVisibility(View.GONE);
                     startDBLoading_for_solo();
 
                 } else {
@@ -142,7 +142,7 @@ public class DashboardFragment extends Fragment {
                                         String temp = document.getId();
                                         ncount++;
                                         Log.d(TAG, ""+ncount);
-                                       // try{
+                                        // try{
                                         CollectionReference uidRef = db2.collection("user_info");
                                         uidRef.document(""+temp)
                                                 .collection("op").document(string2)
@@ -165,12 +165,12 @@ public class DashboardFragment extends Fragment {
                                                         }
                                                     }
                                                 });
-                                        }
-                                        //catch (Exception e) {
-                                            //ocount++;
-                                            //Log.d(TAG, "익셉션"+ocount);
-                                        //}
-                                   // }
+                                    }
+                                    //catch (Exception e) {
+                                    //ocount++;
+                                    //Log.d(TAG, "익셉션"+ocount);
+                                    //}
+                                    // }
                                 } else {
                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                 }
@@ -179,6 +179,7 @@ public class DashboardFragment extends Fragment {
             }
         }, 1000);
     }
+
     private void startDBLoading_for_solo() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -186,7 +187,7 @@ public class DashboardFragment extends Fragment {
             public void run() {
                 Log.d(TAG, "디비로딩솔로.");
                 db.collection("user_info").document(""+Cuid)
-                        .collection("op").document(""+string1)
+                        .collection("op").document(""+string2)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -195,7 +196,9 @@ public class DashboardFragment extends Fragment {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
                                         Log.d(TAG, "DocumentSnapshot data: " + document.get("opinion"));
-                                        //group_name.setText(""+document.get("opinion"));
+                                        name1.setText(userObj.getname());
+                                        op1.setText(""+document.get("opinion"));
+                                        dialogs.progressOFF();
                                     } else {
                                         Log.d(TAG, "No such document");
                                     }
@@ -212,13 +215,13 @@ public class DashboardFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialog.progressOFF();
+                dialogs.progressOFF();
                 Log.d(TAG, "셋팅.");
-                name1.setText(name_list[0]);
-                name2.setText(name_list[1]);
+                name1.setText("익명의 별똥별 "+(ncount-1));
+                name2.setText("익명의 별똥별 "+(ncount));
                 op1.setText(op_list[0]);
                 op2.setText(op_list[1]);
             }
-        }, 5500);
+        }, 2000);
     }
 }

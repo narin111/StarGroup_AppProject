@@ -56,6 +56,7 @@ public class WritingActivity extends Activity {
                     Map<String, Object> op1 = new HashMap<>();
                     op1.put("opinion", Contexts);
                     op1.put("bookcode", code);
+                    op1.put("uid", user.getUid());
                     uidRef.document(""+Cuid).collection("op").document(""+code).set(op1);
                     inputMethodManager.hideSoftInputFromWindow(op_context.getWindowToken(), 0);
                     Toast toast = Toast.makeText(getApplicationContext(),"느낀점 작성 완료", Toast.LENGTH_SHORT);

@@ -32,7 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.BookObj;
-import org.techtown.starmuri.Dialog;
+import org.techtown.starmuri.Dialogs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,15 +48,15 @@ public class LoginActivity extends AppCompatActivity {
     Intent intent_to_Homefrag;
     BookObj this_week;
     String[] doc_list;
-    Dialog dialog;
+    Dialogs dialogs;
     AppCompatDialog progressDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         doc_list = new String[12];
-        dialog = new Dialog();
-        dialog.setdialog(progressDialog);
+        dialogs = new Dialogs();
+        dialogs.setdialog(progressDialog);
         Log.d(TAG, "Oncreate 실행됨");
         // Set the dimensions of the sign-in button.
         Button signInButton = findViewById(R.id.sign_in_button);
@@ -173,14 +173,14 @@ public class LoginActivity extends AppCompatActivity {
             CUser.put("name", CUname);
             CUser.put("email", CUemail);
             CUser.put("g_code", "0000A");
-            dialog.progressON(this," 회원가입서 쓰는중...");
+            dialogs.progressON(this," 회원가입서 쓰는중...");
             db.collection("user_info").document(Cuid)
                     .set(CUser)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
-                            dialog.progressOFF();
+                            dialogs.progressOFF();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
         }, 3000);
     }//로딩 메소드들 사이 밀리초 재설정 필요함. write<=get_db<book_obj 인거 까진 알겠음.
     private void start_get_DB_Loading() {
-        dialog.progressON(this,"도서관에서 책 찾는중...");
+        dialogs.progressON(this,"도서관에서 책 찾는중...");
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -253,7 +253,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("bookcode",this_week.getBookcode());
                         editor.putString("topic",this_week.getTopic());
                         editor.commit();
-                        dialog.progressOFF();
+                        dialogs.progressOFF();
                         startActivity(intent_to_Homefrag);   // Intent 시작
                         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                         finish();

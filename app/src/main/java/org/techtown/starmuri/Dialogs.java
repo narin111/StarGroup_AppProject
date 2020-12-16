@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatDialog;
 
 import java.util.Objects;
 
-public class Dialog {
+public class Dialogs {
     private AppCompatDialog progressDialog;
     public void setdialog(AppCompatDialog x){
         this.progressDialog = x;
