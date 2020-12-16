@@ -50,8 +50,7 @@ public class GroupFragment extends Fragment {
     GroupObj groupObj;
     private FirebaseFirestore db, db2;
     FirebaseUser user;
-    private Button kick_button,give_king_button,join_allow_button,
-                    group_search_button,group_make_button,withdrawal;
+    private Button group_search_button,group_make_button,withdrawal;
     private TextView group_name,Mnumber,Mlist;
     private View view;
     Map<String, Object> op1;
@@ -76,10 +75,6 @@ public class GroupFragment extends Fragment {
         Mlist = root.findViewById(R.id.member_list);
 
         view = root.findViewById(R.id.list_g);
-
-        kick_button = root.findViewById(R.id.kick);
-        give_king_button = root.findViewById(R.id.give_king);
-        join_allow_button = root.findViewById(R.id.join_allow);
         group_search_button = root.findViewById(R.id.group_search);
         group_make_button = root.findViewById(R.id.group_make);
         withdrawal = root.findViewById(R.id.withdrawal);

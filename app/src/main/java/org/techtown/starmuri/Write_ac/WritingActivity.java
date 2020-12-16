@@ -42,14 +42,7 @@ public class WritingActivity extends Activity {
         final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         final SharedPreferences sharedPref = getSharedPreferences("sFile",MODE_PRIVATE);
         final String string = sharedPref.getString("topic","asd");
-        final String string2 = sharedPref.getString("op","No");
-        if (string2.equals("No")) {
-            textView.setText(string);
-        }
-        else{
-            textView.setText(string+"\n\n(이전에 작성한 적이 있다면, 기존의 느낀점에 덮어씌워집니다.)");
-        }
-
+        textView.setText(string+"\n 주의! 수정은 불가능합니다.");
         finish_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,9 +51,7 @@ public class WritingActivity extends Activity {
                     final String Contexts = op_context.getText().toString();
                     CollectionReference uidRef = db.collection("user_info");
                     String Cuid = user.getUid();
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("op","yes");
-                    editor.commit();
+                    op_context.setEnabled(false);
                     String code = sharedPref.getString("bookcode","asd");
                     Map<String, Object> op1 = new HashMap<>();
                     op1.put("opinion", Contexts);
@@ -69,21 +60,51 @@ public class WritingActivity extends Activity {
                     inputMethodManager.hideSoftInputFromWindow(op_context.getWindowToken(), 0);
                     Toast toast = Toast.makeText(getApplicationContext(),"느낀점 작성 완료", Toast.LENGTH_SHORT);
                     toast.show();
+                    finish_button.setClickable(false);
                 }
             });
+    }
+
+    //수정 버튼 추가해두기.
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        savestate();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        restorestate();
     }
     private long backPtime;
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis() - backPtime < 1500){
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        if (System.currentTimeMillis() - backPtime < 1500) {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             Intent intent_to_main = new Intent(getBaseContext(), MainActivity.class);  // Intent 선언
             startActivity(intent_to_main);   // Intent 시작
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
             return;
         }
         backPtime = System.currentTimeMillis();
-        Toast.makeText(this,"'뒤로' 버튼을 한 번 더 누르면 돌아갑니다..",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "'뒤로' 버튼을 한 번 더 누르면 돌아갑니다..", Toast.LENGTH_SHORT).show();
+    }
+    public void savestate(){
+        SharedPreferences sharedPref = getSharedPreferences("Wr_AcFile",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        final String Contexts = op_context.getText().toString();
+        editor.putString("OP",Contexts);
+        editor.commit();
+    }
+    public void restorestate(){
+        SharedPreferences sharedPref = getSharedPreferences("Wr_AcFile",MODE_PRIVATE);
+        if ((sharedPref != null) && (sharedPref.contains("OP"))){
+            final String Contexts = sharedPref.getString("OP","");
+            op_context.setText(Contexts);
+            finish_button.setClickable(false);
+            op_context.setEnabled(false);
+        }
     }
 }
