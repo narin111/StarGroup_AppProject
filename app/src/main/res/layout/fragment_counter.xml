@@ -7,17 +7,37 @@
     tools:context=".ui.counter.CounterFragment">
 
     <TextView
-        android:id="@+id/text_counter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/textView3"
+        android:layout_width="269dp"
+        android:layout_height="82dp"
+        android:fontFamily="@font/nanumgothic_normal"
+        android:gravity="center"
+        android:text="이만큼 별을 빛냈어요!"
+        android:textColor="@color/default_text"
+        android:textSize="20dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/cnttext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_horizontal" />
+        app:layout_constraintVertical_bias="0.843" />
+
+    <TextView
+        android:id="@+id/cnttext"
+        android:layout_width="402dp"
+        android:layout_height="161dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/nanumgothic_normal"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/default_text"
+        android:textSize="120sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.545" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

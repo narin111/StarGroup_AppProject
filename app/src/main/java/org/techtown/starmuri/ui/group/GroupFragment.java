@@ -173,7 +173,7 @@ public class GroupFragment extends Fragment {
                                     Mlist.append(""+document.get("name")+"\n");
                                     Log.d(TAG, document.getId() + " => " + document.get("name"));
                                     i++;
-                            }
+                                }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
