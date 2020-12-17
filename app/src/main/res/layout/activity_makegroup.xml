@@ -35,7 +35,7 @@
                 android:src="@drawable/ic_star_2" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/G_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
@@ -51,7 +51,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/G_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -118,7 +118,7 @@
             android:paddingTop="30dp">
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/Now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

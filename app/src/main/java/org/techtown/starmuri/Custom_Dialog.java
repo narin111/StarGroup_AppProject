@@ -3,6 +3,7 @@ package org.techtown.starmuri;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -71,47 +72,53 @@ public class Custom_Dialog {
                 {
                     inputMethodManager.hideSoftInputFromWindow(code_get.getWindowToken(), 0);
                     return_code = code_get.getText().toString();
-                    if (user != null) {
-                        // User is signed in
-                        Log.d(TAG, "현재 사용자 인증됨.");
-                        final String Cuid = user.getUid();
-                        final Map<String, Object> g_code = new HashMap<>();
-                        g_code.put("g_code",return_code);
-                        db.collection("group_code")
-                                .whereEqualTo("code",  ""+return_code)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                if(document.exists()){
-                                                    db.collection("user_info").document("" + Cuid)
-                                                            .update(g_code)
-                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                flag = 1;
-                                                                Log.d(TAG, "성공");
-                                                                Toast.makeText(F.getContext(), "성공적으로 가입했어요!", Toast.LENGTH_SHORT).show();
-                                                                dialog.dismiss();
-                                                                Intent intent = F.getActivity().getIntent();
-                                                                F.getActivity().finish();
-                                                                F.getActivity().startActivity(intent);
-                                                            }
-                                                        }
-                                                    });
+                    if (!TextUtils.isEmpty(return_code)) {
+                        if (user != null) {
+                            // User is signed in
+                            Log.d(TAG, "현재 사용자 인증됨.");
+                            final String Cuid = user.getUid();
+                            final Map<String, Object> g_code = new HashMap<>();
+                            g_code.put("g_code", return_code);
+                            db.collection("group_code")
+                                    .whereEqualTo("code", "" + return_code)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    if (document.exists()) {
+                                                        db.collection("user_info").document("" + Cuid)
+                                                                .update(g_code)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            flag = 1;
+                                                                            Log.d(TAG, "성공");
+                                                                            Toast.makeText(F.getContext(), "성공적으로 가입했어요!", Toast.LENGTH_SHORT).show();
+                                                                            dialog.dismiss();
+                                                                            Intent intent = F.getActivity().getIntent();
+                                                                            F.getActivity().finish();
+                                                                            F.getActivity().startActivity(intent);
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
                                                 }
+                                            } else {
+                                                Log.d(TAG, "Error getting documents: ", task.getException());
                                             }
-                                        }else {
-                                            Log.d(TAG, "Error getting documents: ", task.getException());
                                         }
-                                    }
-                                });
-                    } else {
-                        // No user is signed in
-                        Log.d(TAG, "NoUser");
+                                    });
+                        } else {
+                            // No user is signed in
+                            Log.d(TAG, "NoUser");
+                        }
+                    }
+                    else{
+                        Toast toast = Toast.makeText(F.getContext(),"아무것도 쓰지 않았네요~", Toast.LENGTH_SHORT);
+                        toast.show();
                     }
 
 

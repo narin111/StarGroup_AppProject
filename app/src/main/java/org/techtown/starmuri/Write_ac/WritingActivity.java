@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -42,16 +43,17 @@ public class WritingActivity extends Activity {
         final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         final SharedPreferences sharedPref = getSharedPreferences("sFile",MODE_PRIVATE);
         final String string = sharedPref.getString("topic","asd");
-        textView.setText(string+"\n 주의! 수정은 불가능합니다.");
+        textView.setText(string+"\n 수정버튼만들어전지현");
         finish_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     System.out.println("등록 버튼 클릭");
                     final String Contexts = op_context.getText().toString();
+                    if(!TextUtils.isEmpty(Contexts)){
+
                     CollectionReference uidRef = db.collection("user_info");
                     String Cuid = user.getUid();
-                    op_context.setEnabled(false);
                     String code = sharedPref.getString("bookcode","asd");
                     Map<String, Object> op1 = new HashMap<>();
                     op1.put("opinion", Contexts);
@@ -62,6 +64,12 @@ public class WritingActivity extends Activity {
                     Toast toast = Toast.makeText(getApplicationContext(),"느낀점 작성 완료", Toast.LENGTH_SHORT);
                     toast.show();
                     finish_button.setClickable(false);
+                    op_context.setEnabled(false);
+                    }
+                    else{
+                        Toast toast = Toast.makeText(getApplicationContext(),"아무것도 쓰지 않았네요~", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
             });
     }
