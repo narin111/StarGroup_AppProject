@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#0D0027"
+    android:background="#351555"
     android:orientation="vertical">
 
     <LinearLayout
@@ -24,53 +24,26 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="70dp"
-                android:layout_height="80dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/dialog_icon" />
+                app:srcCompat="@drawable/iconicno" />
 
             <TextView
-                android:id="@+id/title_text"
+                android:id="@+id/title_texts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_weight="3"
+                android:layout_marginTop="7dp"
+                android:layout_weight="7"
                 android:fontFamily="@font/nanumgothic_normal"
-                android:text="별 무리 찾기"
+                android:text="정말 나갈 거예요?"
                 android:textColor="@color/default_text"
                 android:textSize="25sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginRight="10dp"
-                android:layout_weight="7"
-                android:fontFamily="@font/maplestory_light"
-                android:gravity="end"
-                android:text="잘못된 코드 입력 시\n가입 진행 불가."
-                android:textColor="@color/default_text"
-                android:textSize="12sp"
-                android:textStyle="bold" />
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/g_code_in"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:ems="10"
-            android:fontFamily="@font/nanumgothic_light"
-            android:hint="그룹코드를 입력하세요."
-            android:inputType="textPersonName"
-            android:textColor="@color/default_text"
-            android:textColorHint="#83DFDFDF" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,7 +53,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/No_B"
+                android:id="@+id/No_Bt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -92,7 +65,7 @@
                 android:textColor="@color/default_text" />
 
             <Button
-                android:id="@+id/Yes_B"
+                android:id="@+id/Yes_Bt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -100,7 +73,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_border"
                 android:fontFamily="@font/nanumgothic_normal"
-                android:text="여기로 가입할래요!"
+                android:text="네"
                 android:textColor="@color/default_text"
                 android:textStyle="bold" />
         </LinearLayout>

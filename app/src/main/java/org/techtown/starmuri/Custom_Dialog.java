@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,17 +38,19 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.google.android.material.internal.ContextUtils.getActivity;
 
-public class Custom_Dialog extends Dialogs {
+public class Custom_Dialog {
         private EditText code_get;
         private Fragment F;
         private String return_code;
         private FirebaseFirestore db;
         private FirebaseUser user;
         private InputMethodManager inputMethodManager;
+        private int flag;
         public Custom_Dialog(Fragment fragment) {
             this.F = fragment;
         }
         public void Go_Dialog(){
+            flag = 0;
             db = FirebaseFirestore.getInstance();
             user = FirebaseAuth.getInstance().getCurrentUser();
             final Dialog dialog = new Dialog(F.getContext());
@@ -70,13 +73,10 @@ public class Custom_Dialog extends Dialogs {
                     return_code = code_get.getText().toString();
                     if (user != null) {
                         // User is signed in
-
-
                         Log.d(TAG, "현재 사용자 인증됨.");
                         final String Cuid = user.getUid();
                         final Map<String, Object> g_code = new HashMap<>();
                         g_code.put("g_code",return_code);
-
                         db.collection("group_code")
                                 .whereEqualTo("code",  ""+return_code)
                                 .get()
@@ -87,29 +87,28 @@ public class Custom_Dialog extends Dialogs {
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 if(document.exists()){
                                                     db.collection("user_info").document("" + Cuid)
-                                                            .update(g_code).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            .update(g_code)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                            Log.d(TAG, "성공");
-                                                            Toast.makeText(F.getContext(), "성공적으로 가입했어요!", Toast.LENGTH_SHORT).show();
-                                                            dialog.dismiss();
-                                                            Intent intent = F.getActivity().getIntent();
-                                                            F.getActivity().finish();
-                                                            F.getActivity().startActivity(intent);
+                                                            if (task.isSuccessful()) {
+                                                                flag = 1;
+                                                                Log.d(TAG, "성공");
+                                                                Toast.makeText(F.getContext(), "성공적으로 가입했어요!", Toast.LENGTH_SHORT).show();
+                                                                dialog.dismiss();
+                                                                Intent intent = F.getActivity().getIntent();
+                                                                F.getActivity().finish();
+                                                                F.getActivity().startActivity(intent);
+                                                            }
                                                         }
                                                     });
                                                 }
                                             }
-                                        } else {
+                                        }else {
                                             Log.d(TAG, "Error getting documents: ", task.getException());
-
                                         }
                                     }
                                 });
-                        Toast.makeText(F.getContext(), "그런 코드는 없어요.. 다시 확인해주세요!", Toast.LENGTH_SHORT).show();
-
-
-
                     } else {
                         // No user is signed in
                         Log.d(TAG, "NoUser");

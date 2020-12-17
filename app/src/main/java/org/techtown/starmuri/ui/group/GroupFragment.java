@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.starmuri.Custom_Dialog;
+import org.techtown.starmuri.Custom_Dialog_2;
 import org.techtown.starmuri.Dialogs;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.GroupObj;
@@ -85,6 +86,9 @@ public class GroupFragment extends Fragment {
         final Custom_Dialog custom_dialog;
         custom_dialog = new Custom_Dialog(this);
 
+        final Custom_Dialog_2 custom_dialog2;
+        custom_dialog2 = new Custom_Dialog_2(this);
+
         if (user != null) {
             // User is signed in
             dialogs.progressON(getActivity(),"흐트러진 파일들 정리하는중...");
@@ -119,6 +123,13 @@ public class GroupFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);   // Intent 시작
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+        withdrawal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("클릭");
+                custom_dialog2.Go_Dialog2();
             }
         });
         /*final TextView textView = root.findViewById(R.id.text_group);
