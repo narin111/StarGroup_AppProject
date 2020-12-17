@@ -214,14 +214,5 @@ public class GroupFragment extends Fragment {
         }
     }, 1000);
     }
-    private void startReadLoading() {
-        Log.d(TAG, "adasda");
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            }
-        }, 1500);
-    }
 
 }

@@ -115,6 +115,8 @@ public class DashboardFragment extends Fragment {
 
                 } else {
                     Log.d(TAG, "현재 사용자 그룹있음."+userObj.getG_code());
+
+
                     startDBLoading();
                     startsetting();
                 }
@@ -201,6 +203,9 @@ public class DashboardFragment extends Fragment {
                                         dialogs.progressOFF();
                                     } else {
                                         Log.d(TAG, "No such document");
+                                        name1.setText(userObj.getname());
+                                        op1.setText("홈 화면에서 이번주 주제에 답해보세요!");
+                                        dialogs.progressOFF();
                                     }
                                 } else {
                                     Log.d(TAG, "get failed with ", task.getException());
@@ -210,6 +215,7 @@ public class DashboardFragment extends Fragment {
             }
         }, 1000);
     }
+
     private void startsetting() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
