@@ -31,7 +31,7 @@ import org.techtown.starmuri.link.UserObj;
 
 import static android.content.ContentValues.TAG;
 
-import org.techtown.starmuri.Dialogs;
+import org.techtown.starmuri.Dialogs.Dialogs;
 
 public class CounterFragment extends Fragment {
 

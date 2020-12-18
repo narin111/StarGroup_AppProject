@@ -1,12 +1,9 @@
 package org.techtown.starmuri.ui.group;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,9 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.techtown.starmuri.Custom_Dialog;
-import org.techtown.starmuri.Custom_Dialog_2;
-import org.techtown.starmuri.Dialogs;
+import org.techtown.starmuri.Dialogs.CD_for_g_code;
+import org.techtown.starmuri.Dialogs.Custom_Dialog;
+import org.techtown.starmuri.Dialogs.Custom_Dialog_2;
+import org.techtown.starmuri.Dialogs.Dialogs;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.GroupObj;
 import org.techtown.starmuri.link.UserObj;
@@ -54,7 +51,7 @@ public class GroupFragment extends Fragment {
     GroupObj groupObj;
     private FirebaseFirestore db, db2;
     FirebaseUser user;
-    private Button group_search_button,group_make_button,withdrawal;
+    private Button group_search_button,group_make_button,withdrawal,show_code;
     private TextView group_name,Mnumber,Mlist;
     private View view;
     Map<String, Object> op1;
@@ -81,6 +78,7 @@ public class GroupFragment extends Fragment {
         group_search_button = root.findViewById(R.id.group_search);
         group_make_button = root.findViewById(R.id.group_make);
         withdrawal = root.findViewById(R.id.withdrawal);
+        show_code = root.findViewById(R.id.show_code);
         op1 = new HashMap<>();
         dialogs = new Dialogs();
         final Custom_Dialog custom_dialog;
@@ -88,6 +86,9 @@ public class GroupFragment extends Fragment {
 
         final Custom_Dialog_2 custom_dialog2;
         custom_dialog2 = new Custom_Dialog_2(this);
+
+        final CD_for_g_code CD;
+        CD = new CD_for_g_code(this);
 
         if (user != null) {
             // User is signed in
@@ -113,6 +114,13 @@ public class GroupFragment extends Fragment {
             public void onClick(View v) {
                 System.out.println("그룹 검색 버튼 클릭");
                 custom_dialog.Go_Dialog();
+            }
+        });
+        show_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("그룹 초대 버튼 클릭");
+                CD.Go_Dialog(userObj);
             }
         });
         group_make_button.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +169,7 @@ public class GroupFragment extends Fragment {
                     group_search_button.setVisibility(View.GONE);
                     group_make_button.setVisibility(View.GONE);
                     withdrawal.setVisibility(View.VISIBLE);
+                    show_code.setVisibility(View.VISIBLE);
                     startDBLoading();
                 }
             }

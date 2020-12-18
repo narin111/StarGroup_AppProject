@@ -94,7 +94,7 @@
             android:layout_marginRight="15dp"
             android:layout_weight="2.5"
             android:fontFamily="@font/nanumgothic_normal"
-            android:text="대신, 다른 별들의 얘기를 들어보려면\n이번 주제에 대해 먼저 느낀점을 등록해야해요.\n이번 주제는 홈 화면의 버튼을 누르면 볼 수 있어요!"
+            android:text="부끄럼쟁이 별들을 위해\n게시판은 익명 시스템이에요."
             android:textColor="@color/default_text"
             android:textSize="15sp" />
 
@@ -106,7 +106,7 @@
             android:layout_marginRight="15dp"
             android:layout_weight="2.5"
             android:fontFamily="@font/nanumgothic_normal"
-            android:text="그룹장이 되면 다른 별들을 관리할 수 있고,\n또 다른 별들을 무리에 들어오게 할 수 있어요!"
+            android:text="그룹장은 다른 별들을 초대할 수 있고,\n또 그룹을 탈퇴하면 그룹은 자동으로 해체되어요.....\n그러니 신중한 결정이 필요할 거에요!"
             android:textColor="@color/default_text" />
 
         <LinearLayout

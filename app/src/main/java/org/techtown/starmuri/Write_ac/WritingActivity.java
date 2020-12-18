@@ -26,7 +26,7 @@ import org.techtown.starmuri.link.UserObj;
 import org.techtown.starmuri.ui.home.HomeFragment;
 
 public class WritingActivity extends Activity {
-    private Button finish_button;
+    private Button finish_button,edit_button;
     private EditText op_context;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -36,6 +36,7 @@ public class WritingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writing);
         finish_button = findViewById(R.id.finish_writing);
+        edit_button = findViewById(R.id.edit_b);
         op_context = findViewById(R.id.opinion_context);
         textView = findViewById(R.id.textView2);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -43,7 +44,15 @@ public class WritingActivity extends Activity {
         final InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         final SharedPreferences sharedPref = getSharedPreferences("sFile",MODE_PRIVATE);
         final String string = sharedPref.getString("topic","asd");
-        textView.setText(string+"\n 수정버튼만들어전지현");
+        textView.setText(string+"\n\n수정 방법 : 수정 버튼을 누르고, \n내용을 편집하고, 등록 버튼을 누른다.");
+        edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("수정 버튼 클릭");
+                finish_button.setClickable(true);
+                op_context.setEnabled(true);
+            }
+        });
         finish_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

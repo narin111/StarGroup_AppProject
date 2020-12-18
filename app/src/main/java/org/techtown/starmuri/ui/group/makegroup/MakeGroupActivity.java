@@ -15,8 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.techtown.starmuri.Dialogs;
+import org.techtown.starmuri.Dialogs.Dialogs;
 import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 
@@ -86,6 +84,7 @@ public class MakeGroupActivity extends Activity{
                     Log.d(TAG, "성공");
                     Map<String, Object> p1 = new HashMap<>();
                     p1.put("name", user.getDisplayName());
+                    p1.put("king", user.getUid());
                     db2.collection("group_code")
                             .document(""+g_codes).collection("member")
                             .document(""+user.getUid()).set(p1);

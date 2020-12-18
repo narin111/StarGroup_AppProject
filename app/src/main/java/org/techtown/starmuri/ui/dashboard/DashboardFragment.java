@@ -28,7 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.UserObj;
-import org.techtown.starmuri.Dialogs;
+import org.techtown.starmuri.Dialogs.Dialogs;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;

@@ -120,6 +120,18 @@
                 android:text="그룹 탈퇴"
                 android:textColor="@color/default_text"
                 android:visibility="gone" />
+
+            <Button
+                android:id="@+id/show_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_border"
+                android:fontFamily="@font/nanumgothic_light"
+                android:text="초대"
+                android:textColor="@color/default_text"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

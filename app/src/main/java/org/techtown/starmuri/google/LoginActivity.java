@@ -32,7 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.BookObj;
-import org.techtown.starmuri.Dialogs;
+import org.techtown.starmuri.Dialogs.Dialogs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,11 +45,12 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore db;
-    Intent intent_to_Homefrag;
-    BookObj this_week;
-    String[] doc_list;
-    Dialogs dialogs;
-    AppCompatDialog progressDialog;
+    private Intent intent_to_Homefrag;
+    private BookObj this_week;
+    private String[] doc_list;
+    private Dialogs dialogs;
+    private AppCompatDialog progressDialog;
+    private Button signInButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
-                //이부분이 처음에 빨갛게 뜨는 이유 발견
-                //저건 빌드시에 json파일을 통해 얻어오는거라 빌드는 깃허브에 안올렸기 때문...
                 .requestEmail()
                 .requestProfile()
                 .build();
