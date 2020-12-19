@@ -113,7 +113,7 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("그룹 검색 버튼 클릭");
-                custom_dialog.Go_Dialog();
+                custom_dialog.Go_Dialog1(userObj);
             }
         });
         show_code.setOnClickListener(new View.OnClickListener() {
