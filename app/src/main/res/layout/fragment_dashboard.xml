@@ -6,7 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fr27"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumgothic_normal"
+        android:gravity="center"
+        android:text="그룹찾기,혹은 만들기를 통해\n그룹에 속하고 다른 별들과 커뮤니케이션 해 보세요!"
+        android:textColor="@color/default_text"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="0.16000003" />
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
@@ -47,113 +78,16 @@
                 android:text="이번 주 주제 가져오는중..."
                 android:textColor="@color/default_text"
                 android:textStyle="bold|italic" />
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_weight="5"
-            android:background="@drawable/text_border"
-            android:orientation="vertical"
-            android:id="@+id/for_solo">
-
-            <TextView
-                android:id="@+id/name1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:text="별무리원1"
-                android:textColor="@color/default_text"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-
-            <TextView
-                android:id="@+id/op1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:fontFamily="@font/nanumgothic_light"
-                android:textColor="@color/default_text" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_weight="5"
-            android:background="@drawable/text_border"
-            android:orientation="vertical"
-            android:id="@+id/for_group">
-
-            <TextView
-                android:id="@+id/name2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:text="별무리원2"
-                android:textColor="@color/default_text"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-
-            <TextView
-                android:id="@+id/op2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:fontFamily="@font/nanumgothic_light"
-                android:textColor="@color/default_text" />
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:id="@+id/for_button">
+            android:layout_weight="7"
+            android:background="@drawable/text_border" />
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_border"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:text="이전"
-                android:textColor="@color/default_text" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_border"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:text="다음"
-                android:textColor="@color/default_text" />
-        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
