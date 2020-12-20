@@ -51,7 +51,7 @@ public class Custom_Dialog {
         public Custom_Dialog(Fragment fragment) {
             this.F = fragment;
         }
-        public void Go_Dialog(){
+        public void Go_Dialog1(final UserObj userObj){
             flag = 0;
             db = FirebaseFirestore.getInstance();
             user = FirebaseAuth.getInstance().getCurrentUser();
@@ -97,7 +97,19 @@ public class Custom_Dialog {
                                                                         if (task.isSuccessful()) {
                                                                             flag = 1;
                                                                             Log.d(TAG, "성공");
-                                                                            //멤버컬렉션에도 넣는 함수 써야함...
+
+                                                                            Map<String, Object> info1 = new HashMap<>();
+                                                                            info1.put("name", userObj.getname());
+                                                                            db.collection("group_code")
+
+                                                                                    .document(""+return_code)
+                                                                                    .collection("member")
+                                                                                    .document(""+user.getUid())
+                                                                                    .set(info1);
+
+                                                                            Log.d(TAG, "입력 성공");
+
+
                                                                             Toast.makeText(F.getContext(), "성공적으로 가입했어요!", Toast.LENGTH_SHORT).show();
                                                                             dialog.dismiss();
                                                                             Intent intent = F.getActivity().getIntent();

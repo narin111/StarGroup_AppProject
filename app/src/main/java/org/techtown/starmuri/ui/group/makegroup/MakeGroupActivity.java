@@ -79,12 +79,12 @@ public class MakeGroupActivity extends Activity{
                     Map<String, Object> g1 = new HashMap<>();
                     g1.put("group_name", temp_name);
                     g1.put("code",g_codes);
+                    g1.put("king", user.getUid());
                     db.collection("group_code")
                             .document(""+g_codes).set(g1);
                     Log.d(TAG, "성공");
                     Map<String, Object> p1 = new HashMap<>();
                     p1.put("name", user.getDisplayName());
-                    p1.put("king", user.getUid());
                     db2.collection("group_code")
                             .document(""+g_codes).collection("member")
                             .document(""+user.getUid()).set(p1);
