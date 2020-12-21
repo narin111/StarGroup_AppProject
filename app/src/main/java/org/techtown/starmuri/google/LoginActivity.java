@@ -1,13 +1,20 @@
 package org.techtown.starmuri.google;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
 
@@ -32,31 +39,55 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.BookObj;
-import org.techtown.starmuri.Dialog;
+import org.techtown.starmuri.Dialogs.Dialogs;
+import org.techtown.starmuri.work.IntentReceiverzz;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
 //구글 로그인 액티비티
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
+    private int index;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore db;
-    Intent intent_to_Homefrag;
-    BookObj this_week;
-    String[] doc_list;
-    Dialog dialog;
-    AppCompatDialog progressDialog;
+    private Intent intent_to_Homefrag;
+    private BookObj this_week;
+    private ArrayList<String> doc_list = new ArrayList<>();
+    private Dialogs dialogs;
+    private AppCompatDialog progressDialog;
+    private Button signInButton;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private IntentReceiverzz intentReceiver;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        doc_list = new String[12];
-        dialog = new Dialog();
-        dialog.setdialog(progressDialog);
+        dialogs = new Dialogs();
+        dialogs.setdialog(progressDialog);
+
+        intentReceiver = new IntentReceiverzz();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 4);
+
+        Intent intent = new Intent(getBaseContext(), IntentReceiverzz.class);
+        pendingIntent =
+                PendingIntent.getBroadcast(getBaseContext(), 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY*7, pendingIntent);
         Log.d(TAG, "Oncreate 실행됨");
         // Set the dimensions of the sign-in button.
         Button signInButton = findViewById(R.id.sign_in_button);
@@ -68,8 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
-                //이부분이 처음에 빨갛게 뜨는 이유 발견
-                //저건 빌드시에 json파일을 통해 얻어오는거라 빌드는 깃허브에 안올렸기 때문...
                 .requestEmail()
                 .requestProfile()
                 .build();
@@ -81,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Onclick 실행됨");
-                        signIn();
+                signIn();
             }
         });
 
@@ -145,6 +174,10 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "updateui 실행됨");
         if(account!=null){
             //이미 계정을 만들음
+            SharedPreferences sharedPref = getSharedPreferences("IFile",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("index",0);
+            editor.commit();
             startLoading();
             start_get_DB_Loading();
             start_make_BookObj_Loading();
@@ -173,14 +206,13 @@ public class LoginActivity extends AppCompatActivity {
             CUser.put("name", CUname);
             CUser.put("email", CUemail);
             CUser.put("g_code", "0000A");
-            dialog.progressON(this," 회원가입서 쓰는중...");
+            dialogs.progressON(this," 회원가입서 쓰는중...");
             db.collection("user_info").document(Cuid)
                     .set(CUser)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
-                            dialog.progressOFF();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -206,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
         }, 3000);
     }//로딩 메소드들 사이 밀리초 재설정 필요함. write<=get_db<book_obj 인거 까진 알겠음.
     private void start_get_DB_Loading() {
-        dialog.progressON(this,"도서관에서 책 찾는중...");
+        dialogs.progressON(this,"도서관에서 책 찾는중...");
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -221,7 +253,7 @@ public class LoginActivity extends AppCompatActivity {
                                     int i = 0;
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d(TAG, document.getId() + " => " + document.getData());
-                                        doc_list[i] = document.getId();
+                                        doc_list.add(i, document.getId());
                                         i++;
                                     }
 
@@ -235,13 +267,21 @@ public class LoginActivity extends AppCompatActivity {
         }, 3800);
     }
     private void start_make_BookObj_Loading() {
+        SharedPreferences sharedPref_ = getSharedPreferences("IFile",MODE_PRIVATE);
+        index = sharedPref_.getInt("index_",0);
+        if(doc_list.size()-1<index){ //0부터 시작되니까.
+            index = 0;
+            SharedPreferences.Editor editor = sharedPref_.edit();
+            editor.putInt("index",0);
+            editor.commit();
+        }
         this_week = new BookObj();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "객체 가져오는 시간");
-                DocumentReference docRef = db.collection("book_and_topic").document(""+doc_list[0]);
+                DocumentReference docRef = db.collection("book_and_topic").document(""+doc_list.get(index));
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -253,7 +293,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("bookcode",this_week.getBookcode());
                         editor.putString("topic",this_week.getTopic());
                         editor.commit();
-                        dialog.progressOFF();
+                        dialogs.progressOFF();
                         startActivity(intent_to_Homefrag);   // Intent 시작
                         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                         finish();
@@ -262,5 +302,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, 5500);
     }
+
+
+
 }
 

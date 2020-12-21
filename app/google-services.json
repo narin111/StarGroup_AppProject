@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "394582900859-jev0c0jq1vv0kakietlfeh8qii8d3qpu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.techtown.starmuri",
+            "certificate_hash": "b3b88473b4a16824867c3c5d3bb5bb48a8a79c10"
+          }
+        },
+        {
           "client_id": "394582900859-r1603dh7chm6gvjeheenng4b7j5cmmh5.apps.googleusercontent.com",
           "client_type": 3
         }
