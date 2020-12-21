@@ -29,7 +29,7 @@
         android:fontFamily="@font/maplestory_light"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:text="Sign out with Google"
+        android:text="회원 탈퇴"
         android:textAllCaps="false"
         android:textColor="@color/default_text" />
 

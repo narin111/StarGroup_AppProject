@@ -1,6 +1,5 @@
 package org.techtown.starmuri.ui.counter;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -15,25 +14,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.UserObj;
 
 import static android.content.ContentValues.TAG;
 
+import org.techtown.starmuri.Dialogs.Dialogs;
+
 public class CounterFragment extends Fragment {
 
-
+    Dialogs dialogs = new Dialogs();
     private FirebaseAuth firebaseAuth;
     UserObj userObj;
     private FirebaseFirestore db;
     FirebaseUser user;
+    private TextView cnttext;
+    //final SharedPreferences sharedPref = getSharedPreferences("sFile", MODE_PRIVATE);
 
     private CounterViewModel counterViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -44,6 +52,7 @@ public class CounterFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         userObj = new UserObj();
         if (user != null) {
+            //dialog.progressON(getActivity(),"별 세는 중...");
             // User is signed in
             Log.d(TAG, "db반영시간기다림");
             Log.d(TAG, "현재 사용자 인증됨.");
@@ -61,19 +70,57 @@ public class CounterFragment extends Fragment {
             // No user is signed in
             Log.d(TAG, "NoUser");
         }
-
+        startDBLoading();
         counterViewModel =
                 ViewModelProviders.of(this).get(CounterViewModel.class);
         View root = inflater.inflate(R.layout.fragment_counter, container, false);
-        final TextView textView = root.findViewById(R.id.text_counter);
-        counterViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        cnttext = root.findViewById(R.id.cnttext);
+
+        //textView = root.findViewById(R.id.textView);
+        //counterViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        //@Override
+         //   public void onChanged(@Nullable String s) {
+                //textView.setText(s);
+        //    }
+        //});
         return root;
+
     }
+    private void startDBLoading() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            int starcnt = 0;
+            @Override
+            public void run() {
+                Log.d(TAG, "디비로딩.");
+                CollectionReference uidRef = db.collection("user_info");
+                String Cuid = user.getUid();
+                //String code = sharedPref.getString("bookcode","asd");
+                uidRef.document(""+Cuid).collection("op")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        starcnt++;
+                                        cnttext.setText(""+starcnt);
+                                        Log.d(TAG, document.getId() + " => " + starcnt);
+                                    }
+                                    //cnttext.setText(""+starcnt);
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+
+                //dialog.progressOFF();
+
+            }
+        }, 1000);
+    }
+
     private void startLoading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

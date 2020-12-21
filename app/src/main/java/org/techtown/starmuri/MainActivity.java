@@ -1,35 +1,23 @@
 package org.techtown.starmuri;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.techtown.starmuri.Dialogs.Custom_Dialog_readme;
 import org.techtown.starmuri.link.BookObj;
-
-import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +25,35 @@ public class MainActivity extends AppCompatActivity {
     BookObj this_week;
     FragmentTransaction fragmentTransaction;
     private FirebaseAuth firebaseAuth;
+    //private Button readme;
+
+
     Button book_title;
+    //readme = root.findViewById(R.id.question);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.helpmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        Custom_Dialog_readme CDr = new Custom_Dialog_readme(this);
+        CDr.callDialog();
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    public void ShowDialog(){
+
+    }
+//    show_code.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            System.out.println("그룹 초대 버튼 클릭");
+//            CD.Go_Dialog(userObj);
+//        }
+//    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
     }
+
+
+
+
 
 }
 

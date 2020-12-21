@@ -1,109 +1,120 @@
-package org.techtown.starmuri.ui.option;
+package org.techtown.starmuri.Dialogs;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
-import org.techtown.starmuri.Dialogs.Dialogs;
-import org.techtown.starmuri.Loading_ac.LoadingActivity;
-import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.UserObj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
-public class OptionFragment extends Fragment {
+public class Custom_Dialog_2 {
+        private Fragment F;
+        private FirebaseFirestore db;
+        private FirebaseUser user;
+        private UserObj userObj;
+        private Dialog dialog;
+        private int index_count;
+        private Dialogs dialogs;
+        private ArrayList<String> count = new ArrayList<>();
+        public Custom_Dialog_2(Fragment fragment) {
+            this.F = fragment;
+        }
+        public void Go_Dialog2(){
+            dialogs = new Dialogs();
+            db = FirebaseFirestore.getInstance();
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            dialog = new Dialog(F.getContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.custom_dialog_2);
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setAttributes(params);
+            dialog.show();
+            Button Yes = (Button) dialog.findViewById(R.id.Yes_Bt);
+            Button No = (Button) dialog.findViewById(R.id.No_Bt);
+            userObj = new UserObj();
+            DocumentReference docRef = db.collection("user_info").document("" + user.getUid());
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    userObj = documentSnapshot.toObject(UserObj.class);
+                }
+            });
 
-    private OptionViewModel optionViewModel;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    private FirebaseFirestore db;
-    private UserObj userObj;
-    private ArrayList<String> count = new ArrayList<>();
-    private int index_count;
-    private Button log_out;
-    private AppCompatDialog progressDialog;
-    private GoogleSignInClient mGoogleSignInClient;
-    private Dialogs dialogs;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        dialogs = new Dialogs();
-        dialogs.setdialog(progressDialog);
-        userObj = new UserObj();
-        dialogs.progressON(getActivity(),"회원정보 모으는중...");
-        optionViewModel =
-                ViewModelProviders.of(this).get(OptionViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_option, container, false);
-        log_out = root.findViewById(R.id.sign_out_button);
-        log_out.setClickable(false);
-        //final TextView textView = root.findViewById(R.id.text_option);
-        optionViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                //textView.setText(s);
-            }
-        });
-        db = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        String Cuid = user.getUid();
-        DocumentReference docRef = db.collection("user_info").document("" + Cuid);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                userObj = documentSnapshot.toObject(UserObj.class);
-            }
-        });
-        start_get_member_list();
+            Yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    if (user != null) {
+                        // User is signed in
+                        Log.d(TAG, "현재 사용자 인증됨.");
+                        dialogs.progressON(F.getActivity(),"그룹 정보 확인중..");
+                        start_get_member_list();
+                        start_get_delete();
 
-        log_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("회원 탈퇴 클릭");
-                start_get_delete();
-            }
-        });
 
-        return root;
-    }
-    private void start_get_member_list() {
+                    } else {
+                        // No user is signed in
+                        Log.d(TAG, "NoUser");
+                    }
+
+
+                }
+            });
+
+            // 취소 버튼
+            No.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    dialog.dismiss();
+                    Toast.makeText(F.getContext(), "그만둡니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        }
+        private void start_get_member_list() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "db 가져오는 시간");
-                dialogs.progressON(getActivity(),"안녕히 가세요...");
+
                 db.collection("group_code").document("" +userObj.getG_code())
                         .collection("member")
                         .get()
@@ -116,11 +127,10 @@ public class OptionFragment extends Fragment {
                                         Log.d(TAG, document.getId() + " => " + document.getData());
                                         count.add(index_count,document.getId());
                                         index_count++;
-                                        // count[i] = document.getId();
+                                       // count[i] = document.getId();
 
                                     }
-                                    dialogs.progressOFF();
-                                    log_out.setClickable(true);
+
                                 } else {
                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                 }
@@ -136,6 +146,7 @@ public class OptionFragment extends Fragment {
             @Override
             public void run() {
                 Log.d(TAG, "db 가져오는 시간");
+
                 Log.d(TAG, ""+userObj.getG_code());
                 db.collection("group_code").document("" +userObj.getG_code())
                         .get()
@@ -147,6 +158,7 @@ public class OptionFragment extends Fragment {
                                     Log.d(TAG, "DocumentSnapshot data: " + document.get("king"));
                                     //내가 그룹장이면서 그룹원이 1명 남았을 때.
                                     if(document.get("king").equals(user.getUid()) && count.size() ==1 ){
+                                        dialogs.progressSET("별무리가 흩어지는중...");
                                         db.collection("group_code")
                                                 .document(""+userObj.getG_code())
                                                 .delete()
@@ -156,11 +168,18 @@ public class OptionFragment extends Fragment {
                                                         Log.d(TAG, "내가 그룹장이면서 그룹원이 1명 남았을 때. 성공");
                                                         start_member_delete();
                                                         start_user_update();
+                                                        dialogs.progressOFF();
+                                                        dialog.dismiss();
+                                                        Toast.makeText(F.getContext(), "별 무리가 흩어졌습니다...", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = F.getActivity().getIntent();
+                                                        F.getActivity().finish();
+                                                        F.getActivity().startActivity(intent);
                                                     }
                                                 });
                                     }
                                     //내가 그룹장이고, 1명 이상이 남았을 때.
                                     else if(document.get("king").equals(user.getUid())&& count.size() >1){
+                                        dialogs.progressSET("별무리에서 빠져나오는중...");
                                         Log.d(TAG, "배열 요소 수: " + count.size());
                                         String temp = "";
                                         //카운트배열이 빌때까지
@@ -182,13 +201,26 @@ public class OptionFragment extends Fragment {
                                                         //업데이트 되면, 멤버에 있는 내 문서를 지움.
                                                         start_member_delete();
                                                         start_user_update();
+                                                        dialogs.progressOFF();
+                                                        dialog.dismiss();
+                                                        Toast.makeText(F.getContext(), "별 무리에서 빠져나왔습니다.", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = F.getActivity().getIntent();
+                                                        F.getActivity().finish();
+                                                        F.getActivity().startActivity(intent);
                                                     }
                                                 });
                                     }
                                     else{
+                                        dialogs.progressSET("별무리에서 빠져나오는중...");
                                         Log.d(TAG, "그외");
                                         start_member_delete();
                                         start_user_update();
+                                        dialogs.progressOFF();
+                                        dialog.dismiss();
+                                        Toast.makeText(F.getContext(), "별 무리에서 빠져나왔습니다.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = F.getActivity().getIntent();
+                                        F.getActivity().finish();
+                                        F.getActivity().startActivity(intent);
                                     }
                                 } else {
                                     Log.d(TAG, "get failed with ", task.getException());
@@ -199,51 +231,41 @@ public class OptionFragment extends Fragment {
             }
         }, 3000);
     }
+    private void start_user_update() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogs.progressSET("정보 업데이트중...");
+                Log.d(TAG, "유저컬렉션 업데이트");
+                db.collection("user_info").document("" + user.getUid())
+                        .update("g_code","0000A").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "성공");
+                    }
+                });
+
+            }
+        }, 3000);
+    }
     private void start_member_delete() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                dialogs.progressSET("정보 업데이트중...");
                 Log.d(TAG, "멤버컬렉션 지우기");
                 db.collection("group_code")
                         .document(""+userObj.getG_code())
                         .collection("member")
                         .document(user.getUid())
                         .delete();
-                user.delete();
-                firebaseAuth.signOut();
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.server_client_id))
-                        .requestEmail()
-                        .build();
-                mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-                mGoogleSignInClient.revokeAccess();
-                mGoogleSignInClient.signOut();
-                dialogs.progressOFF();
-                getActivity().finish();
 
             }
         }, 3500);
     }
-    private void start_user_update() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "유저컬렉션 업데이트");
-                db.collection("user_info").document("" + user.getUid())
-                        .delete();
-            }
-        }, 3000);
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (mAuthListener != null) {
-            firebaseAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
+
+
 
 }
-

@@ -1,11 +1,9 @@
 package org.techtown.starmuri.ui.group;
 
 import androidx.appcompat.app.AppCompatDialog;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,7 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.techtown.starmuri.Dialog;
+import org.techtown.starmuri.Dialogs.CD_for_g_code;
+import org.techtown.starmuri.Dialogs.Custom_Dialog;
+import org.techtown.starmuri.Dialogs.Custom_Dialog_2;
+import org.techtown.starmuri.Dialogs.Dialogs;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.GroupObj;
 import org.techtown.starmuri.link.UserObj;
@@ -50,13 +51,11 @@ public class GroupFragment extends Fragment {
     GroupObj groupObj;
     private FirebaseFirestore db, db2;
     FirebaseUser user;
-    private Button kick_button,give_king_button,join_allow_button,
-                    group_search_button,group_make_button,withdrawal;
+    private Button group_search_button,group_make_button,withdrawal,show_code;
     private TextView group_name,Mnumber,Mlist;
     private View view;
     Map<String, Object> op1;
-
-    Dialog dialog;
+    Dialogs dialogs;
     AppCompatDialog progressDialog;
 
 
@@ -76,22 +75,24 @@ public class GroupFragment extends Fragment {
         Mlist = root.findViewById(R.id.member_list);
 
         view = root.findViewById(R.id.list_g);
-
-        kick_button = root.findViewById(R.id.kick);
-        give_king_button = root.findViewById(R.id.give_king);
-        join_allow_button = root.findViewById(R.id.join_allow);
         group_search_button = root.findViewById(R.id.group_search);
         group_make_button = root.findViewById(R.id.group_make);
         withdrawal = root.findViewById(R.id.withdrawal);
+        show_code = root.findViewById(R.id.show_code);
         op1 = new HashMap<>();
+        dialogs = new Dialogs();
+        final Custom_Dialog custom_dialog;
+        custom_dialog = new Custom_Dialog(this);
 
-        dialog = new Dialog();
-        dialog.setdialog(progressDialog);
+        final Custom_Dialog_2 custom_dialog2;
+        custom_dialog2 = new Custom_Dialog_2(this);
 
+        final CD_for_g_code CD;
+        CD = new CD_for_g_code(this);
 
         if (user != null) {
             // User is signed in
-            dialog.progressON(getActivity(),"흐트러진 파일들 정리하는중...");
+            dialogs.progressON(getActivity(),"흐트러진 파일들 정리하는중...");
             Log.d(TAG, "db반영시간기다림");
             Log.d(TAG, "현재 사용자 인증됨.");
             String Cuid = user.getUid();
@@ -112,6 +113,14 @@ public class GroupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("그룹 검색 버튼 클릭");
+                custom_dialog.Go_Dialog1(userObj);
+            }
+        });
+        show_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("그룹 초대 버튼 클릭");
+                CD.Go_Dialog(userObj);
             }
         });
         group_make_button.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +131,13 @@ public class GroupFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);   // Intent 시작
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+        withdrawal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("클릭");
+                custom_dialog2.Go_Dialog2();
             }
         });
         /*final TextView textView = root.findViewById(R.id.text_group);
@@ -139,7 +155,7 @@ public class GroupFragment extends Fragment {
             @Override
             public void run() {
                 if (userObj.getG_code().equals("0000A")) {
-                    dialog.progressOFF();
+                    dialogs.progressOFF();
                     Log.d(TAG, "현재 사용자 그룹없음.");
                     group_name.setText("별무리에 속해 보세요~");
                     view.setVisibility(View.INVISIBLE);
@@ -153,6 +169,7 @@ public class GroupFragment extends Fragment {
                     group_search_button.setVisibility(View.GONE);
                     group_make_button.setVisibility(View.GONE);
                     withdrawal.setVisibility(View.VISIBLE);
+                    show_code.setVisibility(View.VISIBLE);
                     startDBLoading();
                 }
             }
@@ -178,7 +195,7 @@ public class GroupFragment extends Fragment {
                                     Mlist.append(""+document.get("name")+"\n");
                                     Log.d(TAG, document.getId() + " => " + document.get("name"));
                                     i++;
-                            }
+                                }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -202,18 +219,9 @@ public class GroupFragment extends Fragment {
                                 }
                             }
                         });
-                dialog.progressOFF();
+                dialogs.progressOFF();
         }
     }, 1000);
-    }
-    private void startReadLoading() {
-        Log.d(TAG, "adasda");
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-            }
-        }, 1500);
     }
 
 }

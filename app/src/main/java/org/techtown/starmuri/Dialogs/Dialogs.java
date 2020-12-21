@@ -1,4 +1,4 @@
-package org.techtown.starmuri;
+package org.techtown.starmuri.Dialogs;
 
 import android.app.Activity;
 import android.app.Application;
@@ -14,9 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDialog;
 
+import org.techtown.starmuri.R;
+
 import java.util.Objects;
 
-public class Dialog {
+public class Dialogs {
     private AppCompatDialog progressDialog;
     public void setdialog(AppCompatDialog x){
         this.progressDialog = x;
