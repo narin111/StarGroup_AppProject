@@ -2,14 +2,23 @@ package org.techtown.starmuri.google;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,9 +42,10 @@ import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 import org.techtown.starmuri.link.BookObj;
 import org.techtown.starmuri.Dialogs.Dialogs;
-
+import org.techtown.starmuri.work.Workers;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -51,6 +61,9 @@ public class LoginActivity extends AppCompatActivity {
     private Dialogs dialogs;
     private AppCompatDialog progressDialog;
     private Button signInButton;
+
+    //공유 데이터로 날짜 저장하고, 실행할때마다 날짜 같은지 아닌지 보게 하면 될듯.
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         doc_list = new String[12];
         dialogs = new Dialogs();
         dialogs.setdialog(progressDialog);
+
         Log.d(TAG, "Oncreate 실행됨");
         // Set the dimensions of the sign-in button.
         Button signInButton = findViewById(R.id.sign_in_button);
@@ -86,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onStart() {
         super.onStart();
@@ -149,12 +164,13 @@ public class LoginActivity extends AppCompatActivity {
             start_make_BookObj_Loading();
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateUI2(GoogleSignInAccount account) {
         Log.d(TAG, "updateui2 실행됨");
         if(account!=null){
             //이미 계정을 만들음
             start_get_DB_Loading();
-            start_make_BookObj_Loading();
+           start_make_BookObj_Loading();
         }
     }
     private void database_write(){
@@ -210,6 +226,7 @@ public class LoginActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 Log.d(TAG, "db가져오는 시간");
                 db.collection("book_and_topic")
                         .get()
@@ -242,6 +259,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "객체 가져오는 시간");
                 DocumentReference docRef = db.collection("book_and_topic").document(""+doc_list[0]);
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         this_week = documentSnapshot.toObject(BookObj.class);
@@ -261,5 +279,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, 5500);
     }
+
 }
 
