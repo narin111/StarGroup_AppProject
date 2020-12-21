@@ -18,6 +18,7 @@ public class DashBoardAdapter extends RecyclerView.Adapter<DashBoardAdapter.View
     private int counter = 0,flag = 0;
     private ArrayList<String> Datas = null;
     private UserObj userObj;
+    private String temp = "";
 
     DashBoardAdapter(ArrayList<String> DataList, int counter_n,UserObj userObj1,int Flag) {
         Datas = DataList;
@@ -26,6 +27,9 @@ public class DashBoardAdapter extends RecyclerView.Adapter<DashBoardAdapter.View
         userObj = userObj1;
         flag = Flag;
     }
+
+
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView textView4;
         TextView textView7;
@@ -33,6 +37,16 @@ public class DashBoardAdapter extends RecyclerView.Adapter<DashBoardAdapter.View
             super(itemView);
             textView4 = itemView.findViewById(R.id.textView4);
             textView7 = itemView.findViewById(R.id.textView7);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position_info = getAdapterPosition();
+                    if(position_info != RecyclerView.NO_POSITION){
+                        textView7.setMaxLines(30);
+                    }
+                }
+            });
         }
     }
     @Override
@@ -43,23 +57,24 @@ public class DashBoardAdapter extends RecyclerView.Adapter<DashBoardAdapter.View
         View view = inflater.inflate(R.layout.recycleritem, parent, false) ;
         DashBoardAdapter.ViewHolder viewHolder = new DashBoardAdapter.ViewHolder(view) ;
 
+
+
         return viewHolder;
     }
     @Override
     public void onBindViewHolder(DashBoardAdapter.ViewHolder holder, int position) {
         if(flag == 0){
             //플래그가 0이면 그룹이면서 본인밖에 없는사람.
-            String text = Datas.get(position);
-            holder.textView7.setMaxLines(1);
+            temp = Datas.get(position);
             holder.textView4.setText(userObj.getname());
-            holder.textView7.setText(text);
+            holder.textView7.setText(temp);
         }
         else {
-            String text = Datas.get(position);
+            temp = Datas.get(position);
             int count = counter--;
-            holder.textView7.setMaxLines(1);
             holder.textView4.append(Integer.toString(count));
-            holder.textView7.setText(text);
+            holder.textView7.setText(temp);
+
         }
     }
     @Override
