@@ -213,7 +213,6 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
-                            dialogs.progressOFF();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

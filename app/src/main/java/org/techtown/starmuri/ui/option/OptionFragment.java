@@ -1,6 +1,7 @@
 package org.techtown.starmuri.ui.option;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -41,6 +42,7 @@ import org.techtown.starmuri.link.UserObj;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 public class OptionFragment extends Fragment {
 
@@ -50,6 +52,7 @@ public class OptionFragment extends Fragment {
     private FirebaseFirestore db;
     private UserObj userObj;
     private ArrayList<String> count = new ArrayList<>();
+    private ArrayList<String> delete_list = new ArrayList<>();
     private int index_count;
     private Button log_out;
     private AppCompatDialog progressDialog;
@@ -91,7 +94,9 @@ public class OptionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("회원 탈퇴 클릭");
+                dialogs.progressON(getActivity(),"안녕히 가세요...");
                 start_get_delete();
+
             }
         });
 
@@ -103,7 +108,6 @@ public class OptionFragment extends Fragment {
             @Override
             public void run() {
                 Log.d(TAG, "db 가져오는 시간");
-                dialogs.progressON(getActivity(),"안녕히 가세요...");
                 db.collection("group_code").document("" +userObj.getG_code())
                         .collection("member")
                         .get()
@@ -146,7 +150,7 @@ public class OptionFragment extends Fragment {
                                     DocumentSnapshot document = task.getResult();
                                     Log.d(TAG, "DocumentSnapshot data: " + document.get("king"));
                                     //내가 그룹장이면서 그룹원이 1명 남았을 때.
-                                    if(document.get("king").equals(user.getUid()) && count.size() ==1 ){
+                                    if(!userObj.getG_code().equals("0000A") && document.get("king").equals(user.getUid()) && count.size() ==1 ){
                                         db.collection("group_code")
                                                 .document(""+userObj.getG_code())
                                                 .delete()
@@ -156,11 +160,12 @@ public class OptionFragment extends Fragment {
                                                         Log.d(TAG, "내가 그룹장이면서 그룹원이 1명 남았을 때. 성공");
                                                         start_member_delete();
                                                         start_user_update();
+                                                        start_user_delete();
                                                     }
                                                 });
                                     }
                                     //내가 그룹장이고, 1명 이상이 남았을 때.
-                                    else if(document.get("king").equals(user.getUid())&& count.size() >1){
+                                    else if(!userObj.getG_code().equals("0000A") && document.get("king").equals(user.getUid())&& count.size() >1){
                                         Log.d(TAG, "배열 요소 수: " + count.size());
                                         String temp = "";
                                         //카운트배열이 빌때까지
@@ -182,6 +187,7 @@ public class OptionFragment extends Fragment {
                                                         //업데이트 되면, 멤버에 있는 내 문서를 지움.
                                                         start_member_delete();
                                                         start_user_update();
+                                                        start_user_delete();
                                                     }
                                                 });
                                     }
@@ -189,6 +195,7 @@ public class OptionFragment extends Fragment {
                                         Log.d(TAG, "그외");
                                         start_member_delete();
                                         start_user_update();
+                                        start_user_delete();
                                     }
                                 } else {
                                     Log.d(TAG, "get failed with ", task.getException());
@@ -210,18 +217,6 @@ public class OptionFragment extends Fragment {
                         .collection("member")
                         .document(user.getUid())
                         .delete();
-                user.delete();
-                firebaseAuth.signOut();
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.server_client_id))
-                        .requestEmail()
-                        .build();
-                mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-                mGoogleSignInClient.revokeAccess();
-                mGoogleSignInClient.signOut();
-                dialogs.progressOFF();
-                getActivity().finish();
-
             }
         }, 3500);
     }
@@ -233,8 +228,62 @@ public class OptionFragment extends Fragment {
                 Log.d(TAG, "유저컬렉션 업데이트");
                 db.collection("user_info").document("" + user.getUid())
                         .delete();
+                db.collection("user_info").document("" + user.getUid()).collection("op")
+                        .whereNotEqualTo("bookcode", "null").get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    int i = 0;
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        delete_list.add(i,""+document.getId());
+                                        i++;
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
             }
         }, 3000);
+    }
+    private void start_user_delete() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "유저컬렉션 업데이트2");
+                int i = 0;
+                for(;delete_list.size()-1>=i;i++){
+                    Log.d(TAG, "유저컬렉션 업데이트21111111");
+                    Log.d(TAG, "유저컬렉션 업데이트21115411"+delete_list.get(i));
+                    db.collection("user_info").document("" + user.getUid())
+                            .collection("op").document(delete_list.get(i))
+                            .delete();
+                }
+                if(delete_list.size()-1<i){
+                    Log.d(TAG, "유저컬렉션 업데이트21595911111");
+                user.delete();
+                firebaseAuth.signOut();
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.server_client_id))
+                        .requestEmail()
+                        .build();
+                SharedPreferences sharedPref1 = getContext().getSharedPreferences("Wr_AcFile",MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sharedPref1.edit();
+                editor1.remove("OP");
+                editor1.commit(); // 돌아올 일은 없겠지만...
+
+                mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+                mGoogleSignInClient.revokeAccess();
+                mGoogleSignInClient.signOut();
+                dialogs.progressOFF();
+                getActivity().finish();
+                System.exit(0);
+                }
+            }
+        }, 4500);
     }
     @Override
     public void onDestroy() {

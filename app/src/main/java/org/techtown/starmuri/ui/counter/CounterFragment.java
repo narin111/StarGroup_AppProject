@@ -64,7 +64,6 @@ public class CounterFragment extends Fragment {
                     userObj = documentSnapshot.toObject(UserObj.class);
                 }
             });
-            startLoading();
 
         } else {
             // No user is signed in
@@ -119,20 +118,5 @@ public class CounterFragment extends Fragment {
 
             }
         }, 1000);
-    }
-
-    private void startLoading() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (userObj.getG_code().equals("0000A")) {
-                    Log.d(TAG, "현재 사용자 그룹없음.");
-                } else {
-                    Log.d(TAG, "현재 사용자 그룹있나?."+userObj.getG_code());
-                }
-            }
-        }, 1000);
-
     }
 }
