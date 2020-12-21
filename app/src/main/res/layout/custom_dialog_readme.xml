@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#0D0027"
+    android:background="@drawable/dialog_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -28,54 +28,54 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:fontFamily="@font/nanumgothic_normal"
                 android:layout_width="match_parent"
-                android:layout_margin="15dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/nanumgothic_normal"
                 android:text="그룹: 그룹초대와 그룹탈퇴 등의 기능이 있습니다. 그룹코드를 통해 그룹에 가입합니다."
                 android:textColor="@color/default_text" />
 
             <TextView
                 android:id="@+id/textView18"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="1"
-                android:textColor="@color/default_text"
-                android:text="게시판: 다른 별들이 쓴 글들을 볼 수 있습니다." />
+                android:fontFamily="@font/nanumgothic_normal"
+                android:text="게시판: 다른 별들이 쓴 글들을 볼 수 있습니다."
+                android:textColor="@color/default_text" />
 
             <TextView
                 android:id="@+id/textView20"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/nanumgothic_normal"
                 android:text="Home: 이번 주의 책과 토론주제가 주어집니다. 책제목을 누르면 자신의 의견을 적을 수 있는    화면이 뜹니다."
                 android:textColor="@color/default_text"
                 android:textColorHighlight="#FFFFFF" />
 
             <TextView
                 android:id="@+id/textView21"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="1"
-                android:text="별 세기: 지금까지 자신이 썼던 책의 수를 말해줍니다."
+                android:fontFamily="@font/nanumgothic_normal"
+                android:text="별 세기: 지금까지 자신이 썼던 의견의 수를 말해줍니다."
                 android:textColor="@color/default_text" />
 
             <TextView
                 android:id="@+id/textView19"
-                android:fontFamily="@font/nanumgothic_normal"
-                android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight="1"
-                android:textColor="@color/default_text"
-                android:text="환경설정: 로그아웃/회원탈퇴를 할 수 있습니다." />
+                android:fontFamily="@font/nanumgothic_normal"
+                android:text="환경설정: 로그아웃/회원탈퇴를 할 수 있습니다."
+                android:textColor="@color/default_text" />
         </LinearLayout>
 
         <LinearLayout
