@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Intent intent_to_Homefrag;
     private BookObj this_week;
-    private ArrayList<String> doc_list = new ArrayList<>();
+    private final ArrayList<String> doc_list = new ArrayList<>();
     private Dialogs dialogs;
     private AppCompatDialog progressDialog;
     private Button signInButton;
@@ -281,7 +281,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Log.d(TAG, "객체 가져오는 시간");
-                DocumentReference docRef = db.collection("book_and_topic").document(""+doc_list.get(index));
+                DocumentReference docRef = db.collection("book_and_topic")
+                        .document(""+doc_list.get(index));
+
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {

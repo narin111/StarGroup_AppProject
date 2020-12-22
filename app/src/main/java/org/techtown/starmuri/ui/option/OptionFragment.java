@@ -25,13 +25,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.Token;
 
 import org.techtown.starmuri.Dialogs.Dialogs;
 import org.techtown.starmuri.Loading_ac.LoadingActivity;
@@ -51,19 +55,20 @@ public class OptionFragment extends Fragment {
     FirebaseUser user;
     private FirebaseFirestore db;
     private UserObj userObj;
-    private ArrayList<String> count = new ArrayList<>();
-    private ArrayList<String> delete_list = new ArrayList<>();
+    private String token;
+    private final ArrayList<String> count = new ArrayList<>();
+    private final ArrayList<String> delete_list = new ArrayList<>();
     private int index_count;
     private Button log_out;
     private AppCompatDialog progressDialog;
     private GoogleSignInClient mGoogleSignInClient;
     private Dialogs dialogs;
+    private AuthCredential credential;
     private FirebaseAuth.AuthStateListener mAuthListener;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dialogs = new Dialogs();
         dialogs.setdialog(progressDialog);
-        userObj = new UserObj();
         dialogs.progressON(getActivity(),"회원정보 모으는중...");
         optionViewModel =
                 ViewModelProviders.of(this).get(OptionViewModel.class);
@@ -81,6 +86,7 @@ public class OptionFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         String Cuid = user.getUid();
+
         DocumentReference docRef = db.collection("user_info").document("" + Cuid);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -262,25 +268,71 @@ public class OptionFragment extends Fragment {
                             .collection("op").document(delete_list.get(i))
                             .delete();
                 }
+
                 if(delete_list.size()-1<i){
                     Log.d(TAG, "유저컬렉션 업데이트21595911111");
-                user.delete();
-                firebaseAuth.signOut();
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.server_client_id))
-                        .requestEmail()
-                        .build();
-                SharedPreferences sharedPref1 = getContext().getSharedPreferences("Wr_AcFile",MODE_PRIVATE);
-                SharedPreferences.Editor editor1 = sharedPref1.edit();
-                editor1.remove("OP");
-                editor1.commit(); // 돌아올 일은 없겠지만...
+                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.d(TAG, "삭제완료");
+                        }
+                    });
+                    firebaseAuth.signOut();
+                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestIdToken(getString(R.string.server_client_id))
+                            .requestEmail()
+                            .build();
+                    SharedPreferences sharedPref1 = getContext().getSharedPreferences("Wr_AcFile",MODE_PRIVATE);
+                    SharedPreferences.Editor editor1 = sharedPref1.edit();
+                    editor1.remove("OP");
+                    editor1.commit(); // 돌아올 일은 없겠지만...
 
-                mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-                mGoogleSignInClient.revokeAccess();
-                mGoogleSignInClient.signOut();
-                dialogs.progressOFF();
-                getActivity().finish();
-                System.exit(0);
+                    mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+                    mGoogleSignInClient.revokeAccess();
+                    mGoogleSignInClient.signOut();
+                    dialogs.progressOFF();
+                    getActivity().finish();
+//                    user.getIdToken(false).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+//
+//                            if (task.isSuccessful()) {
+//                                 token = task.getResult().getToken();
+//                            }
+//                        }
+//                    });
+
+//                    credential = GoogleAuthProvider.getCredential(token, null);
+//                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            final String Uid = user.getUid();
+//                            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        firebaseAuth.signOut();
+//                                        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                                                .requestIdToken(getString(R.string.server_client_id))
+//                                                .requestEmail()
+//                                                .build();
+//                                        SharedPreferences sharedPref1 = getContext().getSharedPreferences("Wr_AcFile",MODE_PRIVATE);
+//                                        SharedPreferences.Editor editor1 = sharedPref1.edit();
+//                                        editor1.remove("OP");
+//                                        editor1.commit(); // 돌아올 일은 없겠지만...
+//
+//                                        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+//                                        mGoogleSignInClient.revokeAccess();
+//                                        mGoogleSignInClient.signOut();
+//                                        dialogs.progressOFF();
+//                                        getActivity().finish();
+//                                    }
+//                                }
+//                            });
+//
+//                        }
+//                    });
+
                 }
             }
         }, 4500);

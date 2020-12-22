@@ -37,7 +37,7 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class CD_for_g_code {
-    private Fragment F;
+    private final Fragment F;
     private FirebaseFirestore db;
     private FirebaseUser user;
     private TextView textView;
@@ -55,7 +55,7 @@ public class CD_for_g_code {
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.getWindow().setAttributes(params);
         dialog.show();
-        Button No = (Button) dialog.findViewById(R.id.No_Bt);
+        Button No = dialog.findViewById(R.id.No_Bt);
         textView = dialog.findViewById(R.id.g_code_in);
         textView.setText(userObjIN.getG_code());
 

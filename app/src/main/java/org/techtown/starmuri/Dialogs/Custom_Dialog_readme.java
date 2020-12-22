@@ -11,7 +11,7 @@ import org.techtown.starmuri.MainActivity;
 import org.techtown.starmuri.R;
 
 public class Custom_Dialog_readme {
-    private Context context;
+    private final Context context;
 
     public Custom_Dialog_readme(Context context)
     {
@@ -25,7 +25,7 @@ public class Custom_Dialog_readme {
         readme.setContentView(R.layout.custom_dialog_readme);
         readme.show();
 
-        final Button ok = (Button) readme.findViewById(R.id.ok);
+        final Button ok = readme.findViewById(R.id.ok);
         //final Button cancel = (Button) readme.findViewById(R.id.cancel);
 
         // 확인 버튼

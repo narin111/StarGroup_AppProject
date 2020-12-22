@@ -41,14 +41,14 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class Custom_Dialog_2 {
-        private Fragment F;
+        private final Fragment F;
         private FirebaseFirestore db;
         private FirebaseUser user;
         private UserObj userObj;
         private Dialog dialog;
         private int index_count;
         private Dialogs dialogs;
-        private ArrayList<String> count = new ArrayList<>();
+        private final ArrayList<String> count = new ArrayList<>();
         public Custom_Dialog_2(Fragment fragment) {
             this.F = fragment;
         }
@@ -64,8 +64,8 @@ public class Custom_Dialog_2 {
             params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setAttributes(params);
             dialog.show();
-            Button Yes = (Button) dialog.findViewById(R.id.Yes_Bt);
-            Button No = (Button) dialog.findViewById(R.id.No_Bt);
+            Button Yes = dialog.findViewById(R.id.Yes_Bt);
+            Button No = dialog.findViewById(R.id.No_Bt);
             userObj = new UserObj();
             DocumentReference docRef = db.collection("user_info").document("" + user.getUid());
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

@@ -42,7 +42,7 @@ import static com.google.android.material.internal.ContextUtils.getActivity;
 
 public class Custom_Dialog {
         private EditText code_get;
-        private Fragment F;
+        private final Fragment F;
         private String return_code;
         private FirebaseFirestore db;
         private FirebaseUser user;
@@ -64,9 +64,9 @@ public class Custom_Dialog {
             dialog.getWindow().setAttributes(params);
             dialog.show();
             inputMethodManager= (InputMethodManager) F.getActivity().getSystemService(INPUT_METHOD_SERVICE);
-            Button Yes = (Button) dialog.findViewById(R.id.Yes_B);
-            Button No = (Button) dialog.findViewById(R.id.No_B);
-            code_get = (EditText) dialog.findViewById(R.id.g_code_in);
+            Button Yes = dialog.findViewById(R.id.Yes_B);
+            Button No = dialog.findViewById(R.id.No_B);
+            code_get = dialog.findViewById(R.id.g_code_in);
             Yes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view)

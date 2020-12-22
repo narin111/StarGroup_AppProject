@@ -43,7 +43,7 @@ public class Dialogs {
         }
 
 
-        final ImageView img_loading_frame = (ImageView) progressDialog.findViewById(R.id.iv_frame_loading);
+        final ImageView img_loading_frame = progressDialog.findViewById(R.id.iv_frame_loading);
         final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
         img_loading_frame.post(new Runnable() {
             @Override
@@ -52,7 +52,7 @@ public class Dialogs {
             }
         });
 
-        TextView tv_progress_message = (TextView) progressDialog.findViewById(R.id.tv_progress_message);
+        TextView tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message);
         if (!TextUtils.isEmpty(message)) {
             tv_progress_message.setText(message);
         }
@@ -65,7 +65,7 @@ public class Dialogs {
             return;
         }
 
-        TextView tv_progress_message = (TextView) progressDialog.findViewById(R.id.tv_progress_message);
+        TextView tv_progress_message = progressDialog.findViewById(R.id.tv_progress_message);
         if (!TextUtils.isEmpty(message)) {
             tv_progress_message.setText(message);
         }
