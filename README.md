@@ -1,4 +1,4 @@
-# <img src="https://user-images.githubusercontent.com/75404763/102946160-24d3a280-4503-11eb-92b8-b331a58592b5.png" width="25px" height="25px" title="icon" alt="Constellation"></img>별무리 [ Constellation ]
+# <img src="https://user-images.githubusercontent.com/75404763/102946409-ef7b8480-4503-11eb-831d-a97563d4dcdf.png" width="540px" height="171px" title="타이틀" alt="Constellation"></img>
 ### Mobile Programming Project-Android Application
 ### 2020 학년도 모바일프로그래밍 과목에서 텀프로젝트로 개발한 "독서토론" 어플입니다.
 
